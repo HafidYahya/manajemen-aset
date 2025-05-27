@@ -27,6 +27,11 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->navigationGroups([
+                'Manajemen Aset',
+                'Transaksi',
+                'Laporan',
+            ])
             ->default()
             ->font('Poppins')
             ->brandLogo(asset('/images/company_logo_datanex_light.png'))
@@ -67,6 +72,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

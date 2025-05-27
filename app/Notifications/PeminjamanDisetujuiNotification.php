@@ -28,7 +28,8 @@ class PeminjamanDisetujuiNotification extends BaseNotification implements Should
             ->success()
             ->actions([
                 Action::make('Lihat')
-                    ->url(route('filament.admin.resources.peminjamen.index')),
+                    ->url(route('filament.admin.resources.peminjamen.index'))
+                    ->markAsRead(),
             ])
             ->getDatabaseMessage();
     }

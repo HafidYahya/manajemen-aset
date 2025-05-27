@@ -20,6 +20,10 @@ use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Filament\Resources\AsetResource\RelationManagers\PeminjamanRelationManager;
+use App\Filament\Resources\AsetResource\RelationManagers\MutasiRelationManager;
+use App\Filament\Resources\AsetResource\RelationManagers\MaintenanceRelationManager;
+
+
 
 
 class AsetResource extends Resource
@@ -31,6 +35,7 @@ class AsetResource extends Resource
     protected static ?string $pluralModelLabel = 'Daftar Aset';
     protected static ?string $modelLabel = 'Aset';
     protected static ?string $navigationGroup = 'Manajemen Aset';
+    
 
 
     public static function form(Form $form): Form
@@ -168,6 +173,8 @@ class AsetResource extends Resource
     public static function getRelations(): array
     {
         return [
+            MutasiRelationManager::class,
+            MaintenanceRelationManager::class,
             PeminjamanRelationManager::class,
         ];
     }

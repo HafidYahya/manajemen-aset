@@ -23,12 +23,14 @@ use App\Notifications\PeminjamanDisetujuiNotification;
 use App\Notifications\PeminjamanDitolakNotification;
 class PeminjamanResource extends Resource
 {
+    
     protected static ?string $model = Peminjaman::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-table-cells';
     protected static ?string $navigationGroup = 'Transaksi';
     protected static ?string $modelLabel = 'Peminjaman';
     protected static ?string $pluralModelLabel = 'Daftar Peminjaman';
     protected static ?string $navigationLabel = 'Peminjaman';
+    
 
     public static function getEloquentQuery(): Builder
     {

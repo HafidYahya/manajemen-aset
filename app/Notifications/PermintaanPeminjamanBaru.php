@@ -28,7 +28,8 @@ class PermintaanPeminjamanBaru extends BaseNotification implements ShouldQueue
             ->info()
             ->actions([
                 Action::make('Lihat')
-                    ->url(route('filament.admin.resources.peminjamen.index')),
+                    ->url(route('filament.resources.peminjamen.index'))
+                    ->markAsRead(),
             ])
             ->getDatabaseMessage(); // Penting untuk ikon lonceng di Filament
     }

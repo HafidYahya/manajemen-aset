@@ -28,7 +28,8 @@ class PeminjamanDitolakNotification extends BaseNotification implements ShouldQu
             ->success()
             ->actions([
                 Action::make('Lihat')
-                    ->url(route('filament.admin.resources.peminjamen.index')),
+                    ->url(route('filament.admin.resources.peminjamen.index'))
+                    ->markAsRead(),
             ])
             ->getDatabaseMessage();
     }

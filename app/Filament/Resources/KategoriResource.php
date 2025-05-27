@@ -28,6 +28,7 @@ class KategoriResource extends Resource
     protected static ?string $modelLabel = 'Kategori'; // Untuk title form/edit
     protected static ?string $pluralModelLabel = 'Daftar Kategori'; // Untuk title tabel
     protected static ?string $navigationLabel = 'Kategori'; // Label sidebar
+    
 
     public static function form(Form $form): Form
     {
