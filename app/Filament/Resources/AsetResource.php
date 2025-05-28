@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Filament\Resources\AsetResource\RelationManagers\PeminjamanRelationManager;
 use App\Filament\Resources\AsetResource\RelationManagers\MutasiRelationManager;
 use App\Filament\Resources\AsetResource\RelationManagers\MaintenanceRelationManager;
+use Filament\Tables\Actions\EditAction;
 
 
 
@@ -130,12 +131,34 @@ class AsetResource extends Resource
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
                 ),
-                TextColumn::make('kode')->sortable()->searchable(),
-                TextColumn::make('nama')->sortable()->searchable()->wrap(),
+                ImageColumn::make('qr_code')
+                    ->label('Kode QR')
+                    ->size(80)
+                    ->disk('public')
+                    ->visible(fn (): bool => Auth::user()->hasAnyRole('Admin', 'Petugas'))
+                    ->action(
+                    Tables\Actions\Action::make('viewQr')
+                        ->modalContent(function ($record) { // Correct way to get the URL
+                            $url = $record->qr_code ? Storage::url($record->qr_code) : null;
+                            
+                            return view('filament.components.qr-modal', [
+                                'qrUrl' => $url,
+                                'filename' => $record->qr_code ? basename($record->qr_code) : null
+                            ]);
+                        })
+                        ->modalHeading('QR Code')
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                ),
+                TextColumn::make('kode')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('nama')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('kategori.nama')->label('Kategori'),
                 TextColumn::make('lokasi')
                     ->label('Lokasi')
-                    ->wrap()
                     ->formatStateUsing(function ($state) {
                         return $state->ruangan . ' - ' . $state->gedung;
                     }),
@@ -162,12 +185,23 @@ class AsetResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()->visible(fn (): bool => Auth::user()->hasAnyRole('Admin', 'Petugas')),
                 Tables\Actions\DeleteAction::make()->visible(fn (): bool => Auth::user()->hasAnyRole('Admin', 'Petugas')),
+                Tables\Actions\Action::make('printQr')
+                    ->label('Cetak QR')
+                    ->icon('heroicon-o-qr-code')
+                    ->url(fn ($record) => route('aset.qr.label', $record->id))
+                    ->openUrlInNewTab()
+                    ->visible(fn () => Auth::user()->hasRole(['Admin', 'Petugas', 'Manajer Aset'])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordUrl(
+                fn ($record) => Auth::user()->hasAnyRole(['Admin', 'Petugas', 'Manajer Aset'])
+                    ? static::getUrl('edit', ['record' => $record])
+                    : null
+            );
     }
 
     public static function getRelations(): array

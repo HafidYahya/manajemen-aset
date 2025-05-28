@@ -49,9 +49,9 @@ class PeminjamanRelationManager extends RelationManager
                         'tahun_ini' => 'Tahun Ini',
                         'semua' => 'Semua Data',
                     ])
-                    ->default('hari_ini')
+                    ->default('semua')
                     ->query(function (Builder $query, array $data) {
-                        $value = $data['value'] ?? 'hari_ini';
+                        $value = $data['value'] ?? 'semua';
                         
                         return match ($value) {
                             'hari_ini' => $query->whereDate('tanggal_pinjam', today()),

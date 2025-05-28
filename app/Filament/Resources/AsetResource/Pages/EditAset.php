@@ -14,6 +14,7 @@ class EditAset extends EditRecord
         return static::getResource()::getUrl('index');
     }
     protected static string $resource = AsetResource::class;
+    
 
     protected function getHeaderActions(): array
     {

@@ -13,9 +13,14 @@ use App\Models\Lokasi;
 use App\Exports\AsetRekapExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanRekapAset extends Page implements HasTable
 {
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(['Admin', 'Petugas', 'Manajer Aset']);
+    }
     protected static ?int $navigationSort = 5;
     use InteractsWithTable;
 

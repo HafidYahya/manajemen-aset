@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ActivityLogResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(['Admin', 'Petugas', 'Manajer Aset']);
+    }   
     protected static ?string $model = Activity::class;
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     protected static ?string $navigationGroup = 'Laporan';
@@ -40,7 +44,13 @@ class ActivityLogResource extends Resource
                         'danger' => 'deleted',
                     ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ])->visible(fn () => Auth::user()->hasRole('Admin')),
+            ]);
+            
     }
 
     public static function getPages(): array

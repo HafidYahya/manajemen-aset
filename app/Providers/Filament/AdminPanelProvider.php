@@ -21,6 +21,7 @@ use Filament\Notifications\Notification;
 use Filament\Notifications\Pages\Notifications;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Settings;
+use Filament\Tables\Columns\Column;
 
 class AdminPanelProvider extends PanelProvider
 {

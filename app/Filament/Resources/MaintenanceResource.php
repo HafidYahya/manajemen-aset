@@ -16,9 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Facades\Auth;
 
 class MaintenanceResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(['Admin', 'Petugas', 'Manajer Aset']);
+    }
     protected static ?string $model = Maintenance::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-wrench-screwdriver';

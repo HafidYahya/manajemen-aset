@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Aset extends Model
 {
@@ -28,7 +30,8 @@ class Aset extends Model
         'nilai_perolehan',
         'status', 
         'deskripsi', 
-        'foto'
+        'foto',
+        'qr_code',
     ];
 
     public function maintenances()
@@ -48,6 +51,17 @@ class Aset extends Model
         return $this->hasMany(MutasiAset::class);
     }
     
+    protected static function booted()
+    {
+        static::created(function ($aset) {
+            $url = route('scan.aset.show', $aset->id);
+
+            $filename = 'qrcodes/aset-' . $aset->id . '.svg';
+            Storage::disk('public')->put($filename, QrCode::format('svg')->size(200)->generate($url));
+
+            $aset->update(['qr_code' => $filename]);
+        });
+    }
 
   
 }
