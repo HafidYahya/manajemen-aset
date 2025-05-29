@@ -65,7 +65,7 @@
     </div>
 
     <h2>LAPORAN REKAP ASET</h2>
-    <div class="subheader">Sistem Manajemen Aset Kantor</div>
+    <div class="subheader">Sistem Manajemen Aset</div>
 
     <table>
         <thead>
