@@ -88,7 +88,7 @@ class AsetResource extends Resource
                     'tersedia' => 'Tersedia',
                     'rusak' => 'Rusak',
                     'rusak ringan' => 'Rusak Ringan',
-                    'maintenance' => 'Maintenance',
+                    // 'maintenance' => 'Maintenance',
                     'hilang' => 'Hilang',
                 ])
                 ->default('tersedia')

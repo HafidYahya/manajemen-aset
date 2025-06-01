@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'Karyawan']);
 
         // Assign role ke user admin pertama
-        $user = User::where('email', 'hapidyahya01@gmail.com')->first();
+        $user = User::where('email', 'admin@gmail.com')->first();
         if ($user) {
             $user->assignRole('Admin');
         }

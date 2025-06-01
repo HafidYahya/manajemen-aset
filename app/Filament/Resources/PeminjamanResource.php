@@ -50,8 +50,15 @@ class PeminjamanResource extends Resource
                 ->searchable()
                 ->required()
                 ->options(
-                    Aset::where('status', 'tersedia')->pluck('nama', 'id')
-                ),
+            Aset::where('status', 'tersedia')
+                        ->whereDoesntHave('peminjaman', function ($query) {
+                            $query->whereIn('status', ['menunggu', 'dipinjam']);
+                        })
+                        ->get()
+                        ->mapWithKeys(function ($aset) {
+                            return [$aset->id => "{$aset->nama} | {$aset->kode}"];
+                        })
+        ),
             DatePicker::make('tanggal_pinjam')->required(),
             DatePicker::make('tanggal_kembali')->required(),
             Textarea::make('keterangan')->rows(3),

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Filament\Resources\PeminjamanResource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification as BaseNotification;
@@ -9,11 +10,13 @@ use App\Models\Peminjaman;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
 
-class PermintaanPeminjamanBaru extends BaseNotification implements ShouldQueue
+class PermintaanPeminjamanBaru extends BaseNotification
 {
     use Queueable;
 
-    public function __construct(public Peminjaman $peminjaman) {}
+    public function __construct(public Peminjaman $peminjaman) {
+        $this->peminjaman->load(['user', 'aset']);
+    }
 
     public function via($notifiable): array
     {
@@ -28,7 +31,7 @@ class PermintaanPeminjamanBaru extends BaseNotification implements ShouldQueue
             ->info()
             ->actions([
                 Action::make('Lihat')
-                    ->url(route('filament.resources.peminjamen.index'))
+                    ->url(PeminjamanResource::getUrl())
                     ->markAsRead(),
             ])
             ->getDatabaseMessage(); // Penting untuk ikon lonceng di Filament

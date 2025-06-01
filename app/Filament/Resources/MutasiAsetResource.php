@@ -22,7 +22,7 @@ class MutasiAsetResource extends Resource
 {
     public static function canAccess(): bool
     {
-        return Auth::user()->hasAnyRole(['Admin', 'Manajer Aset', 'Petugas']);
+        return Auth::user()->hasAnyRole(['Admin', 'Petugas']);
     }
     protected static ?string $model = MutasiAset::class;
 

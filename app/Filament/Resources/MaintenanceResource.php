@@ -22,7 +22,7 @@ class MaintenanceResource extends Resource
 {
     public static function canAccess(): bool
     {
-        return Auth::user()->hasRole(['Admin', 'Petugas', 'Manajer Aset']);
+        return Auth::user()->hasRole(['Admin', 'Petugas']);
     }
     protected static ?string $model = Maintenance::class;
 
@@ -53,7 +53,8 @@ class MaintenanceResource extends Resource
                         'selesai' => 'Selesai',
                     ])
                     ->default('proses')
-                    ->required(),
+                    ->required()
+                    ->hidden(),
 
                 Select::make('dikerjakan_oleh')
                     ->label('Penanggung Jawab')
@@ -69,10 +70,10 @@ class MaintenanceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('aset.kode')->label('Kode'),
-                Tables\Columns\TextColumn::make('aset.nama')->label('Aset'),
-                Tables\Columns\TextColumn::make('tanggal_mulai')->date('l, d F Y'),
-                Tables\Columns\TextColumn::make('tanggal_selesai')->date('l, d F Y')->default('-'),
+                Tables\Columns\TextColumn::make('aset.kode')->label('Kode')->searchable(),
+                Tables\Columns\TextColumn::make('aset.nama')->label('Aset')->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_mulai')->date('l, d F Y')->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_selesai')->date('l, d F Y')->default('-')->searchable(),
                 Tables\Columns\TextColumn::make('status')->badge()
                     ->colors([
                         'warning' => 'proses',
@@ -82,7 +83,12 @@ class MaintenanceResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'proses' => 'Dalam Proses',
+                        'selesai' => 'Selesai',
+                        
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

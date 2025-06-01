@@ -8,8 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PermintaanPeminjamanBaru;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CreatePeminjaman extends CreateRecord
+
+class CreatePeminjaman extends CreateRecord implements ShouldQueue
 {
     protected static string $resource = PeminjamanResource::class;
 
@@ -22,9 +24,9 @@ class CreatePeminjaman extends CreateRecord
     protected function afterCreate(): void
     {
         // Ambil user dengan role "Manajer Aset"
-        $manajers = User::role('Manajer Aset')->get();
+        $manajersDanPetugas = User::role(['Manajer Aset', 'Petugas'])->get();
 
         // Kirim notifikasi ke manajer aset
-        Notification::send($manajers, new PermintaanPeminjamanBaru($this->record));
+        Notification::send($manajersDanPetugas, new PermintaanPeminjamanBaru($this->record));
     }
 }

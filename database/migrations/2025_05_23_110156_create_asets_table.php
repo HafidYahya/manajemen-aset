@@ -23,7 +23,6 @@ return new class extends Migration
             $table->enum('status', ['tersedia', 'rusak','rusak ringan', 'maintenance', 'hilang', 'dipinjam'])->default('tersedia');
             $table->text('deskripsi')->nullable();
             $table->string('foto')->nullable();
-            $table->integer('qty');
             $table->timestamps();
         });
     }
