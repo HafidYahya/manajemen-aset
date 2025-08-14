@@ -32,6 +32,7 @@ class Aset extends Model
         'deskripsi', 
         'foto',
         'qr_code',
+        'gps_imei',
     ];
 
     public function maintenances()
@@ -49,6 +50,11 @@ class Aset extends Model
     public function mutasi()
     {
         return $this->hasMany(MutasiAset::class);
+    }
+
+    public function latestLocation()
+    {
+        return $this->hasOne(AssetLocation::class, 'imei', 'gps_imei')->latestOfMany('upload_time');
     }
     
     protected static function booted()

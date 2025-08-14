@@ -56,6 +56,11 @@ class AsetResource extends Resource
             TextInput::make('nama')
                 ->required()
                 ->label('Nama Aset'),
+                
+            TextInput::make('gps_imei')
+                ->label('IMEI GPS')
+                ->nullable()
+                ->helperText('Masukkan IMEI yang dipasang di aset ini'),
 
             Select::make('kategori_id')
                 ->label('Kategori')
@@ -162,6 +167,7 @@ class AsetResource extends Resource
                     ->formatStateUsing(function ($state) {
                         return $state->ruangan . ' - ' . $state->gedung;
                     }),
+                TextColumn::make('gps_imei')->label('IMEI GPS'),
                 TextColumn::make('vendor.nama')->label('Vendor')->default('-'),
                 BadgeColumn::make('status')
                     ->colors([
